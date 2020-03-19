@@ -18,7 +18,7 @@ function fetchTrainers() {
       trainers = results;
       renderTrainers();
     });
-}
+};
 
 function makeTrainerCard(trainer) {
   const trainerContainer = document.querySelector("main");
@@ -37,16 +37,20 @@ function makeTrainerCard(trainer) {
 
     const div = event.target.parentNode;
     let ul = div.querySelector("ul");
-
+    let numberOfLi = ul.getElementsByTagName('li').length
+    
     let newPokemonPromise = makeANewPokemon(trainerId);
 
     newPokemonPromise.then(result => {
-      let li = createPokemonLi(result);
-      ul.appendChild(li);
+      
+      if (numberOfLi < 7){
+        let li = createPokemonLi(result);
+        ul.appendChild(li);
+      } else {
+        alert("This Trainer has a full team.")
+      }
     });
-
-    console.log(newPokemonPromise);
-    
+   //console.log(newPokemonPromise);
   });
 
   trainerContainer.appendChild(newDiv);
@@ -57,7 +61,7 @@ function makeTrainerCard(trainer) {
 
     ul.appendChild(li);
   });
-}
+};
 
 function renderTrainers() {
   trainers.forEach(trainer => makeTrainerCard(trainer));
@@ -92,7 +96,7 @@ function makeANewPokemon(trainerID) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json"
+      "Accept": "application/json"
     },
     body: JSON.stringify({ trainer_id: trainerID })
   }).then(response => response.json());
